@@ -10,14 +10,45 @@ function require = {
 }
 */
 const { PORT, DATABASE_URL } = require('./config');
+const {BlogPost} = require('./models');
 
 const app = express();
 app.use(bodyParser.json());
 
-const {BlogPost} = require('./models');
+
 
 app.get('/posts', (req, res) => {
-  res.sendStatus(200);
+  BlogPost
+  .find()
+  .limit(20)
+  .then(blogPosts => {
+    res.json({
+      blogPosts: blogPosts.map(
+        (blogPost) => blogPost.apiRepr()
+      )
+    });
+  })
+  .catch(
+    err =>{
+      console.error(err);
+      res.sendStatus(500);    
+    });
+});
+
+app.get('/posts/:id', (req, res) => {
+  res.sendStatus(500);
+})
+
+app.post('/posts/', (req, res) => {
+  res.sendStatus(500);
+})
+
+app.put('/posts/:id', (req, res) => {
+  res.sendStatus(500);
+})
+
+app.delete('/posts/:id', (req, res) => {
+  res.sendStatus(500);
 })
 
 let server;
@@ -60,3 +91,5 @@ if (require.main === module) {
 };
 
 module.exports = {app, runServer, closeServer};
+
+console.log(DATABASE_URL);
