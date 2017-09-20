@@ -92,9 +92,12 @@ app.put('/posts/:id', (req, res) => {
     .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
-// app.delete('/posts/:id', (req, res) => {
-//   res.sendStatus(500);
-// })
+app.delete('/posts/:id', (req, res) => {
+  BlogPost
+    .findByIdAndRemove(req.params.id)
+    .then(blogPost => res.status(204).end())
+    .catch(err => res.status(500).json({message:'Internatl server error'}));
+});
 
   let server;
 
